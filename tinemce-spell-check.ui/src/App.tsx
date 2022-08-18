@@ -1,7 +1,8 @@
+import { Editor } from "@tinymce/tinymce-react";
+
 function App() {
   return (
-    <div>
-    </div>
+    <Editor tinymceScriptSrc={process.env.PUBLIC_URL + '/tinymce/tinymce.min.js'} />
   );
 }
 
