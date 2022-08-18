@@ -85,8 +85,8 @@
       var m, matches = [];
       var dom = editor.dom;
       var blockElementsMap = editor.schema.getBlockElements();
-      var hiddenTextElementsMap = editor.schema.getWhiteSpaceElements();
-      var shortEndedElementsMap = editor.schema.getShortEndedElements();
+      var hiddenTextElementsMap = editor.schema.getWhitespaceElements();
+      var shortEndedElementsMap = editor.schema.getVoidElements();
       var createMatch = function (m, data) {
         if (!m[0]) {
           throw new Error('findAndReplaceDOMText cannot handle zero-length matches');

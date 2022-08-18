@@ -29308,6 +29308,70 @@
     }
     var LocalStorage = localStorage;
 
+    var __assign = function () {
+      __assign =
+        Object.assign ||
+        function __assign(t) {
+          for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s)
+              if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
+          }
+          return t;
+        };
+      return __assign.apply(this, arguments);
+    };
+
+    var XHR = __assign(__assign({}, Observable), {
+      send: function (settings) {
+        var xhr, count = 0;
+        var ready = function () {
+          if (!settings.async || xhr.readyState === 4 || count++ > 10000) {
+            if (settings.success && count < 10000 && xhr.status === 200) {
+              settings.success.call(settings.success_scope, '' + xhr.responseText, xhr, settings);
+            } else if (settings.error) {
+              settings.error.call(settings.error_scope, count > 10000 ? 'TIMED_OUT' : 'GENERAL', xhr, settings);
+            }
+            xhr = null;
+          } else {
+            wrappedSetTimeout(ready, 10);
+          }
+        };
+        settings.scope = settings.scope || this;
+        settings.success_scope = settings.success_scope || settings.scope;
+        settings.error_scope = settings.error_scope || settings.scope;
+        settings.async = settings.async !== false;
+        settings.data = settings.data || '';
+        XHR.fire('beforeInitialize', { settings: settings });
+        xhr = new XMLHttpRequest();
+        if (xhr.overrideMimeType) {
+          xhr.overrideMimeType(settings.content_type);
+        }
+        xhr.open(settings.type || (settings.data ? 'POST' : 'GET'), settings.url, settings.async);
+        if (settings.crossDomain) {
+          xhr.withCredentials = true;
+        }
+        if (settings.content_type) {
+          xhr.setRequestHeader('Content-Type', settings.content_type);
+        }
+        if (settings.requestheaders) {
+          Tools.each(settings.requestheaders, function (header) {
+            xhr.setRequestHeader(header.key, header.value);
+          });
+        }
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr = XHR.fire('beforeSend', {
+          xhr: xhr,
+          settings: settings
+        }).xhr;
+        xhr.send(settings.data);
+        if (!settings.async) {
+          return ready();
+        }
+        wrappedSetTimeout(ready, 10);
+      }
+    });
+
     const publicApi = {
       geom: { Rect },
       util: {
@@ -29319,7 +29383,8 @@
         Observable,
         I18n,
         LocalStorage,
-        ImageUploader
+        ImageUploader,
+        XHR
       },
       dom: {
         EventUtils,
