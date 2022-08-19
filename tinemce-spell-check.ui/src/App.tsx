@@ -6,11 +6,9 @@ function App() {
       tinymceScriptSrc={process.env.PUBLIC_URL + "/tinymce/tinymce.js"}
       init={{
         menubar: false,
-        plugins: [
-          "spellchecker",
-        ],
-        toolbar:
-          "spellchecker",
+        plugins: ["spellchecker"],
+        toolbar: "spellchecker",
+        spellchecker_rpc_url: "https://localhost:7120/SpellCheck",
       }}
     />
   );
