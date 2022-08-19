@@ -21,3 +21,5 @@ To setup this project:
 
 # Add more languages
 Currently English, Spanish, and French dictionaries are setup in this project, other languages will cause an error. To add more languages, add .dic and .aff files to the api/Dicts directory.
+
+NOTE: For performance, the TinyMCE JS should be minified before prod deployment. The minified TinyMCE JS in this repo does not contain the spellchecker changes.
