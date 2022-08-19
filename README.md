@@ -17,7 +17,8 @@ If there are no misspelled words, the API should return `{ "words": {} }`. This 
 To setup this project:
 1. Run `npm install` in the `ui` directory.
 2. Run `npm start` in the `ui` directory.
-3. Run `dotnet run` in the `api` directory.
+3. Run `dotnet restore` in the `api` directory.
+4. Run `dotnet run` in the `api` directory.
 
 # Add more languages
 Currently English, Spanish, and French dictionaries are setup in this project, other languages will cause an error. To add more languages, add .dic and .aff files to the api/Dicts directory.
